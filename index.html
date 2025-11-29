@@ -9,162 +9,234 @@
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
 
         :root {
-            --primary-color: #4CAF50;
-            --dark-bg: #0D0D0D;
-            --medium-bg: #121212;
-            --light-text: #E0E0E0;
-            --medium-text: #BDBDBD;
+            --primary-color: #88da21; --dark-bg: #0D0D0D; --medium-bg: #121212;
+            --light-text: #E0E0E0; --medium-text: #BDBDBD; --fail-color: #E53935;
         }
 
-        body {
-            background-color: var(--dark-bg);
-            color: var(--light-text);
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px 0;
-        }
-
-        /* Estrutura Geral e Telas */
+        body { background-color: var(--dark-bg); color: var(--light-text); font-family: 'Roboto', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px 0; }
         .screen { display: none; width: 100%; }
         .screen.active { display: block; }
-        .game-container { background-color: var(--medium-bg); border: 1px solid #222; border-radius: 10px; padding: 30px; width: 90%; max-width: 600px; text-align: center; box-shadow: 0 0 20px rgba(76, 175, 80, 0.1); }
+        .game-container { background-color: var(--medium-bg); border: 1px solid #222; border-radius: 10px; padding: 30px; width: 90%; max-width: 650px; text-align: center; box-shadow: 0 0 20px rgba(136, 218, 33, 0.1); }
         h1, h2, h3 { color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px; margin-top: 0; }
         p { color: var(--medium-text); line-height: 1.6; font-size: 16px; }
-        .btn { background-color: var(--primary-color); color: #ffffff; border: none; padding: 12px 30px; font-size: 18px; border-radius: 5px; cursor: pointer; margin-top: 20px; transition: background-color 0.3s, transform 0.2s; text-transform: uppercase; font-weight: bold; }
-        .btn:hover { background-color: #5cdb61; transform: translateY(-2px); }
-        .btn-back { background-color: #555; font-size: 14px; padding: 8px 20px; }
+        .btn { background-color: var(--primary-color); color: #0D0D0D; border: none; padding: 12px 30px; font-size: 18px; border-radius: 5px; cursor: pointer; margin-top: 20px; transition: background-color 0.3s, transform 0.2s; text-transform: uppercase; font-weight: bold; }
+        .btn:hover { background-color: #a1f03f; transform: translateY(-2px); }
+        .btn-back { background-color: #555; font-size: 14px; padding: 8px 20px; margin-right: 10px; color: #E0E0E0; }
         .btn-back:hover { background-color: #777; }
-        #menu-selection { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
-        .game-card { background-color: #1a1a1a; border: 1px solid #333; padding: 20px; border-radius: 8px; cursor: pointer; transition: border-color 0.3s, background-color 0.3s; }
-        .game-card:hover { border-color: var(--primary-color); background-color: #222; }
-        .game-card h3 { margin-top: 0; margin-bottom: 10px; }
-        .game-card p { margin-bottom: 0; font-size: 14px; }
+        .card-container { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
+        .card { background-color: #1a1a1a; border: 1px solid #333; padding: 20px; border-radius: 8px; cursor: pointer; transition: border-color 0.3s, background-color 0.3s; }
+        .card:hover { border-color: var(--primary-color); background-color: #222; }
+        .card h3 { margin-top: 0; margin-bottom: 10px; }
+        .card p { margin-bottom: 0; font-size: 14px; }
+        .game-footer { margin-top: 20px; }
+        .config-area { display: flex; justify-content: center; gap: 20px; margin: 20px 0; }
+        .config-item { display: flex; flex-direction: column; gap: 5px; }
+        .config-item label { font-size: 14px; color: var(--medium-text); }
+        .config-item input { background-color: #333; border: 1px solid #555; color: var(--light-text); border-radius: 4px; padding: 5px 10px; width: 80px; text-align: center; font-size: 16px; }
+
+        /* Estilos dos Modais */
+        .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background-color: #3C3C3C; border: 1px solid #555; padding: 25px; border-radius: 5px; width: 90%; text-align: center; }
+        .modal-title { font-family: 'Press Start 2P', cursive; color: #E0E0E0; font-size: 20px; text-transform: uppercase; margin-bottom: 20px; }
+
+        /* HACK DA TORRE (CLASSE B) */
+        #tower-modal-content { max-width: 350px; }
+        #tower-game-area { height: 500px; width: 150px; margin: 0 auto; position: relative; overflow: hidden; }
+        #tower-levels-container { position: absolute; bottom: 0; width: 100%; transition: transform 0.2s ease-out; }
+        .tower-block { height: 45px; background-color: var(--primary-color); opacity: 0.6; margin-bottom: 2px; }
+        .tower-block.gap-left { clip-path: polygon(100% 0, 100% 100%, 0 100%, 25% 50%, 0 0); }
+        .tower-block.gap-right { clip-path: polygon(0 0, 0 100%, 100% 100%, 75% 50%, 100% 0); }
+        #tower-player { position: absolute; width: 30px; height: 30px; bottom: 5px; transition: left 0.2s ease-out, transform 0.2s ease-out; }
+        #tower-instructions { font-family: 'Press Start 2P', cursive; color: #E0E0E0; font-size: 10px; margin-top: 20px; margin-bottom: 20px; }
+        #tower-timer-bar-container { width: 100%; background-color: #2a2a2e; border-radius: 5px; height: 15px; overflow: hidden; border: 1px solid #555; }
+        #tower-timer-bar { width: 100%; height: 100%; background-color: var(--primary-color); transition: none; }
+
+        /* HACK DE DIGITAÇÃO (CLASSE B) */
+        #typing-modal-content { max-width: 550px; }
+        #typing-modal-title { font-size: 24px; text-transform: none; }
+        #typing-squares-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 0 auto 30px auto; }
+        .typing-square { background-color: transparent; border: 2px solid #D0D0D0; height: 100px; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-family: 'Roboto', sans-serif; font-size: 40px; font-weight: bold; color: #E0E0E0; position: relative; transition: border-color 0.3s, background-color 0.3s; }
+        .typing-square.completed { border-color: var(--primary-color); background-color: rgba(136, 218, 33, 0.2); }
+        .typing-square .char { z-index: 2; }
+        #typing-timer-bar-container { width: 100%; background-color: #2a2a2e; border-radius: 5px; height: 15px; overflow: hidden; border: 1px solid #555; }
+        #typing-timer-bar { width: 100%; height: 100%; background-color: var(--primary-color); transition: width 0.5s linear; }
         
-        /* JOGO 1: MEMÓRIA DE CORES */
-        .mem-game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 18px; font-weight: bold; color: var(--primary-color); }
-        .mem-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 20px; height: 250px; align-content: center; }
-        .mem-dot { width: 30px; height: 30px; border-radius: 50%; margin: auto; }
-        .mem-question-area { min-height: 270px; display: flex; flex-direction: column; justify-content: center; }
-        .mem-question-text { font-size: 22px; margin-bottom: 25px; }
-        .mem-options-container { display: flex; justify-content: center; gap: 15px; }
-        .mem-option-btn { background-color: #2a2a2a; border: 1px solid var(--primary-color); color: #fff; padding: 12px 25px; font-size: 18px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
-        .mem-option-btn:hover:not(:disabled) { background-color: #3c3c3c; }
-        .mem-option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        /* HACK DE MEMÓRIA (BANCO) */
+        .mem-game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 18px; font-weight: bold; color: var(--primary-color); } .mem-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 20px; height: 250px; align-content: center; } .mem-dot { width: 30px; height: 30px; border-radius: 50%; margin: auto; } .mem-question-area { min-height: 270px; display: flex; flex-direction: column; justify-content: center; } .mem-question-text { font-size: 22px; margin-bottom: 25px; } .mem-options-container { display: flex; justify-content: center; gap: 15px; } .mem-option-btn { background-color: #2a2a2a; border: 1px solid var(--primary-color); color: #fff; padding: 12px 25px; font-size: 18px; border-radius: 5px; cursor: pointer; }
+        
+        /* HACK FURA-FORTE (BANCO) */
+        #safe-crack-container { background-color: #040819; border: 10px solid #2a2a2e; border-radius: 8px; padding: 20px; box-sizing: border-box; position: relative; height: 700px; max-width: 400px; margin: 0 auto; overflow: hidden; font-family: 'Press Start 2P', cursive; } .sc-title { color: #f3f313; font-size: 18px; text-transform: none; } .sc-block-row { position: absolute; top: -50px; left: 0; width: 100%; height: 40px; display: flex; } .sc-block-segment { flex-grow: 1; height: 100%; transition: opacity 0.3s, transform 0.3s; } .sc-player-drill { position: absolute; bottom: 30px; width: 30px; height: 40px; } .sc-game-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; } .sc-game-overlay.hidden { display: none; } .sc-score { position: absolute; top: 15px; right: 15px; color: #f3f313; } @keyframes hit-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } } .hit-animation { animation: hit-shake 0.3s ease-in-out; } .breaking { opacity: 0; transform: scale(0.5); }
+        
+        /* HACK DA MATEMÁTICA (JOALHERIA) */
+        #math-game-container { padding: 20px; border: 2px solid var(--primary-color); border-radius: 8px; background-color: #1a1a1a; } .math-header { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; margin-bottom: 25px; color: var(--primary-color); } .math-problems { font-family: 'Press Start 2P', cursive; font-size: 24px; color: #f3f313; line-height: 1.8; margin-bottom: 30px; } .math-problem { border: 1px solid #444; padding: 15px; border-radius: 5px; margin-bottom: 10px; background-color: #222; } .math-controls button { font-size: 30px; padding: 10px 30px; margin: 0 10px; font-family: 'Press Start 2P'; background-color: #333; border: 1px solid var(--primary-color); color: var(--primary-color); cursor: pointer; } #math-timer.low-time { color: var(--fail-color); }
 
-        /* JOGO 2: FURA-FORTE */
-        /* MUDANÇA: Ajuste de proporção da tela do jogo */
-        #safe-crack-container {
-            background-color: #040819;
-            border: 10px solid #2a2a2e;
-            border-radius: 8px;
-            padding: 20px;
-            box-sizing: border-box;
-            position: relative;
-            height: 550px; /* AUMENTADO para mais visão vertical */
-            max-width: 400px; /* AJUSTADO para proporção 1:2 */
-            margin: 0 auto; /* Adicionado para centralizar */
-            overflow: hidden;
-            font-family: 'Press Start 2P', cursive;
-        }
-
-        .sc-title { color: #f3f313; font-size: 18px; text-transform: none; letter-spacing: 0; margin-bottom: 30px; }
-        .sc-block-row { position: absolute; top: -50px; left: 0; width: 100%; height: 40px; display: flex; }
-        .sc-block-segment { flex-grow: 1; height: 100%; transition: opacity 0.3s, transform 0.3s; }
-        .sc-player-drill { position: absolute; bottom: 30px; width: 30px; height: 40px; }
-        .sc-game-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
-        .sc-game-overlay.hidden { display: none; }
-        .sc-score { position: absolute; top: 15px; right: 15px; color: #f3f313; font-size: 16px; }
-        .speed-selector { margin-bottom: 20px; font-family: 'Roboto', sans-serif; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .speed-selector label { font-size: 14px; color: var(--medium-text); }
-        .speed-selector input { background-color: #333; border: 1px solid #555; color: var(--light-text); border-radius: 4px; padding: 5px 10px; width: 60px; text-align: center; font-size: 16px; }
-
-        @keyframes hit-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-        .hit-animation { animation: hit-shake 0.3s ease-in-out; }
-        .breaking { opacity: 0; transform: scale(0.5); }
-
+        /* HACK DO ALARME */
+        #alarm-game-container { position: relative; max-width: 500px; margin: auto; }
+        #alarm-grid { display: grid; grid-template-columns: repeat(11, 1fr); grid-template-rows: repeat(11, 1fr); width: 100%; aspect-ratio: 1; background-color: #2a2a2e; border: 1px solid #444; background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px); background-size: calc(100% / 11) calc(100% / 11); }
+        .alarm-cell { position: relative; display: flex; justify-content: center; align-items: center; }
+        .alarm-dot { position: absolute; width: 20px; height: 20px; border-radius: 50%; transition: top 0.2s, left 0.2s; }
+        .dot-yellow { background: radial-gradient(circle, #fff700, #ffc300); box-shadow: 0 0 5px #ffc300; cursor: pointer; }
+        .dot-red { background: radial-gradient(circle, #ff5f5f, #c90000); box-shadow: 0 0 5px #c90000; }
+        .dot-green { background: radial-gradient(circle, #50ff50, #00b000); box-shadow: 0 0 8px #00b000; z-index: 2; }
+        .dot-center { width: 22px; height: 22px; background-color: transparent; border: 3px solid white; border-radius: 50%; box-sizing: border-box; }
+        .dot-highlight { background-color: rgba(255, 255, 255, 0.2); width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
+        .alarm-header { display: flex; justify-content: space-between; align-items: center; font-size: 18px; color: var(--primary-color); margin-bottom: 15px; font-weight: bold; }
+        .dot-selected { border: 2px solid white; box-sizing: border-box; transform: scale(1.1); }
     </style>
 </head>
 <body>
 
     <div class="game-container">
-        <!-- ... (código do menu e jogo da memória inalterado) ... -->
-        <div id="main-menu" class="screen active"> <h1>Central de Treinamento</h1> <p>Selecione um minigame para iniciar o treinamento.</p> <div id="menu-selection"> <div class="game-card" data-game="memory-game"> <h3>Hack de Memória</h3> <p>Memorize a quantidade de bolinhas da cor solicitada.</p> </div> <div class="game-card" data-game="safe-crack-game"> <h3>Hack Fura-Forte</h3> <p>Mova a broca para alinhar com a cor correta.</p> </div> </div> </div>
-        <div id="memory-game" class="screen"> <h2>Hack de Memória de Cores</h2> <div id="mem-game-screen"> <div class="mem-game-header"> <span id="mem-round-tracker"></span> <span id="mem-timer-display"></span> </div> <div id="mem-grid" class="mem-grid"></div> <div id="mem-question-area" class="mem-question-area" style="display:none;"> <p id="mem-question-text" class="mem-question-text"></p> <div id="mem-options-container" class="mem-options-container"></div> </div> </div> <div id="mem-result-screen" style="display: none;"> <h2>Desafio Concluído!</h2> <p id="mem-result-text" style="font-size: 24px; margin: 20px 0;"></p> <button id="mem-restart-button" class="btn">Tentar Novamente</button> </div> <button class="btn btn-back" onclick="showScreen('main-menu')">Voltar ao Menu</button> </div>
-
-        <!-- TELA 3: JOGO FURA-FORTE -->
-        <div id="safe-crack-game" class="screen">
-            <div id="safe-crack-container">
-                <div id="sc-start-overlay" class="sc-game-overlay">
-                    <h3 style="color: #f3f313;">Fura-Forte</h3>
-                    <p style="font-family: 'Roboto'; font-size:14px;">Use as setas (← →) para mover a broca.</p>
-                    <div class="speed-selector">
-                        <label for="sc-speed-input">Velocidade Inicial:</label>
-                        <input type="number" id="sc-speed-input" value="2" min="1" max="10" step="0.5">
-                    </div>
-                    <button id="sc-start-btn" class="btn">Iniciar</button>
-                </div>
-                <div id="sc-gameover-overlay" class="sc-game-overlay hidden">
-                    <h3 style="color: #E53935;">FALHA NO HACK</h3>
-                    <p id="sc-final-score" style="font-size: 20px;"></p>
-                    <button id="sc-restart-btn" class="btn">Tentar Novamente</button>
-                </div>
-                <h2 class="sc-title">Match the colors</h2>
-                <div id="sc-score" class="sc-score">Pontos: 0</div>
-            </div>
-            <button class="btn btn-back" onclick="showScreen('main-menu')">Voltar ao Menu</button>
-        </div>
+        <!-- MENUS -->
+        <div id="main-menu" class="screen active"> <h1>Central de Treinamento</h1> <p>Selecione uma categoria para treinar.</p> <div class="card-container"> <div class="card" data-target="bank-heist-games"><h3>Hacks do Roubo Ao Banco</h3><p>Treine os minigames de invasão do banco central.</p></div> <div class="card" data-target="jewelry-heist-games"><h3>Hacks do Roubo à Joalheria</h3><p>Treine os minigames para o roubo de joias.</p></div> <div class="card" data-target="invasion-hacks-games"><h3>Hacks de Invasão Residencial</h3><p>Treine os hacks para desativar sistemas de segurança.</p></div> <div class="card" data-target="boost-classes-menu"><h3>Hacks Boost</h3><p>Treine os hacks específicos para cada classe de boost.</p></div> </div> </div>
+        <div id="bank-heist-games" class="screen"><h2>Hacks do Roubo Ao Banco</h2><div class="card-container"><div class="card" data-target="memory-game"><h3>Hack de Memória</h3><p>Memorize a quantidade de bolinhas da cor solicitada.</p></div><div class="card" data-target="safe-crack-game"><h3>Hack Fura-Forte</h3><p>Mova a broca para alinhar com a cor correta.</p></div></div><div class="game-footer"><button class="btn btn-back" data-target="main-menu">Voltar</button></div></div>
+        <div id="jewelry-heist-games" class="screen"><h2>Hacks do Roubo à Joalheria</h2><div class="card-container"><div class="card" data-target="math-game"><h3>Hack da Matemática</h3><p>Resolva as comparações matemáticas rapidamente.</p></div></div><div class="game-footer"><button class="btn btn-back" data-target="main-menu">Voltar</button></div></div>
+        <div id="invasion-hacks-games" class="screen"><h2>Hacks de Invasão Residencial</h2><div class="card-container"><div class="card" data-target="alarm-game"><h3>Hack do Alarme</h3><p>Leve as bolinhas amarelas para o centro.</p></div></div><div class="game-footer"><button class="btn btn-back" data-target="main-menu">Voltar</button></div></div>
+        <div id="boost-classes-menu" class="screen"><h2>Classes de Boost</h2><div class="card-container"><div class="card" data-target="class-b-games"><h3>Classe B</h3><p>Hacks de Digitação e Escalada.</p></div></div><div class="game-footer"><button class="btn btn-back" data-target="main-menu">Voltar</button></div></div>
+        <div id="class-b-games" class="screen"><h2>Hacks - Classe B</h2><div class="card-container"><div class="card" data-target="typing-game"><h3>Break Free</h3><p>Hack de Digitação Rápida.</p></div><div class="card" data-target="tower-game"><h3>Gather Power</h3><p>Hack de Escalada da Torre.</p></div></div><div class="game-footer"><button class="btn btn-back" data-target="boost-classes-menu">Voltar</button></div></div>
+        
+        <!-- TELAS DOS JOGOS -->
+        <div id="memory-game" class="screen"><h2>Hack de Memória</h2><div id="mem-start-screen"><p>Memorize a grade de cores em 5s e responda em 5s. São 5 rodadas.</p><button class="btn mem-start-btn">Iniciar</button></div><div id="mem-game-screen" style="display: none;"><div class="mem-game-header"><span id="mem-round-tracker"></span><span id="mem-timer-display"></span></div><div id="mem-grid" class="mem-grid"></div><div id="mem-question-area" class="mem-question-area" style="display:none;"><p id="mem-question-text" class="mem-question-text"></p><div id="mem-options-container" class="mem-options-container"></div></div></div><div id="mem-result-screen" style="display: none;"><h2>Desafio Concluído!</h2><p id="mem-result-text" style="font-size: 24px; margin: 20px 0;"></p><button class="btn mem-restart-btn">Tentar Novamente</button></div><div class="game-footer"><button class="btn btn-back" data-target="bank-heist-games">Voltar</button></div></div>
+        <div id="safe-crack-game" class="screen"><div id="safe-crack-container"><div id="sc-start-overlay" class="sc-game-overlay"><h3 class="modal-title">Fura-Forte</h3><p>Use as setas (← →) para mover a broca.</p><div class="config-area"><div class="config-item"><label for="sc-speed-input">Velocidade</label><input type="number" id="sc-speed-input" value="2" min="1"></div></div><button id="sc-start-btn" class="btn">Iniciar</button></div><div id="sc-gameover-overlay" class="sc-game-overlay hidden"><h3 class="modal-title" style="color: var(--fail-color)">FALHA NO HACK</h3><p id="sc-final-score" style="font-size: 20px;"></p><button id="sc-restart-btn" class="btn">Tentar Novamente</button></div><h2 class="sc-title">Match the colors</h2><div id="sc-score" class="sc-score">Pontos: 0</div></div><div class="game-footer"><button class="btn btn-back" data-target="bank-heist-games">Voltar</button></div></div>
+        <div id="math-game" class="screen"><h2>Hack da Matemática</h2><div id="math-start-screen"><p>Compare o resultado das duas contas. Acerte 5 vezes em 20 segundos. Errar uma vez resulta em falha.</p><button id="math-start-btn" class="btn">Iniciar</button></div><div id="math-game-screen" style="display: none;"><div id="math-game-container"><div class="math-header"><span id="math-progress">1/5</span><span id="math-timer">20s</span></div><div class="math-problems"><div id="math-problem-1" class="math-problem"></div><div id="math-problem-2" class="math-problem"></div></div><div class="math-controls"><button data-op="<">&lt;</button><button data-op="=">=</button><button data-op=">">&gt;</button></div></div></div><div id="math-result-screen" style="display: none;"><h2 id="math-result-title"></h2><p id="math-result-text"></p><button id="math-restart-btn" class="btn">Tentar Novamente</button></div><div class="game-footer"><button class="btn btn-back" data-target="jewelry-heist-games">Voltar</button></div></div>
+        <div id="typing-game" class="screen"><div id="typing-start-screen"><h2>Break Free</h2><p>Memorize os números. Em seguida, digite as teclas correspondentes.</p><button id="typing-start-btn" class="btn">Iniciar</button></div><div id="typing-result-screen" style="display: none;"><h2 id="typing-result-title"></h2><p id="typing-result-text"></p><button id="typing-restart-btn" class="btn">Tentar Novamente</button></div><div class="game-footer"><button class="btn btn-back" data-target="class-b-games">Voltar</button></div></div>
+        <div id="tower-game" class="screen"><div id="tower-start-screen"><h2>Gather Power</h2><p>Use as setas para escalar a torre. Configure seu desafio:</p><div class="config-area"><div class="config-item"><label for="tower-height-input">Níveis</label><input type="number" id="tower-height-input" value="100" min="10"></div><div class="config-item"><label for="tower-time-input">Tempo (s)</label><input type="number" id="tower-time-input" value="15" min="5"></div></div><button id="tower-start-btn" class="btn">Iniciar</button></div><div id="tower-result-screen" style="display: none;"><h2 id="tower-result-title"></h2><p id="tower-result-text"></p><button id="tower-restart-btn" class="btn">Tentar Novamente</button></div><div class="game-footer"><button class="btn btn-back" data-target="class-b-games">Voltar</button></div></div>
+        <div id="alarm-game" class="screen"><h2>Hack do Alarme</h2><div id="alarm-start-screen"><p>Use a bolinha verde para guiar as 8 bolinhas amarelas até o centro em 60 segundos.</p><button id="alarm-start-btn" class="btn">Iniciar</button></div><div id="alarm-game-screen" style="display: none;"><div id="alarm-game-container"><div class="alarm-header"><span id="alarm-score">0/8</span><span id="alarm-timer">60s</span></div><div id="alarm-grid"></div></div></div><div id="alarm-result-screen" style="display: none;"><h2 id="alarm-result-title"></h2><p id="alarm-result-text"></p><button id="alarm-restart-btn" class="btn">Tentar Novamente</button></div><div class="game-footer"><button class="btn btn-back" data-target="invasion-hacks-games">Voltar</button></div></div>
     </div>
+    
+    <!-- MODAIS DOS JOGOS -->
+    <div id="typing-modal-backdrop" class="modal-backdrop"> <div id="typing-modal-content" class="modal-content"> <h2 id="typing-modal-title" class="modal-title">Break Free</h2> <div id="typing-squares-container"> <div class="typing-square"><span class="char"></span></div> <div class="typing-square"><span class="char"></span></div> <div class="typing-square"><span class="char"></span></div> <div class="typing-square"><span class="char"></span></div> </div> <div id="typing-timer-bar-container"> <div id="typing-timer-bar"></div> </div> </div> </div>
+    <div id="tower-modal-backdrop" class="modal-backdrop"> <div id="tower-modal-content" class="modal-content"> <h2 id="tower-modal-title" class="modal-title">Gather Power</h2> <div id="tower-game-area"> <div id="tower-levels-container"></div> <div id="tower-player"> <svg viewBox="0 0 100 100"><polygon points="50,0 100,100 0,100" style="fill:transparent;stroke:#E0E0E0;stroke-width:8"/></svg> </div> </div> <p id="tower-instructions">Use as setas para escalar</p> <div id="tower-timer-bar-container"> <div id="tower-timer-bar"></div> </div> </div> </div>
 
     <script>
-        // --- GERENCIADOR DE TELAS ---
-        const screens = document.querySelectorAll('.screen');
-        const menuCards = document.querySelectorAll('.game-card');
-        function showScreen(screenId) { screens.forEach(s => s.classList.remove('active')); document.getElementById(screenId).classList.add('active'); if (screenId === 'main-menu') { resetMemoryGame(); resetSafeCrackGame(); } }
-        menuCards.forEach(card => card.addEventListener('click', () => showScreen(card.getAttribute('data-game'))));
+        // --- GERENCIADOR DE TELAS E EVENTOS GLOBAIS ---
+        const allScreens = document.querySelectorAll('.screen');
+        const allCards = document.querySelectorAll('.card');
+        const allBackButtons = document.querySelectorAll('.btn-back');
+
+        function showScreen(screenId) {
+            allScreens.forEach(s => s.classList.remove('active'));
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) targetScreen.classList.add('active');
+            
+            // Pausar todos os jogos para evitar conflitos
+            resetMemoryGame();
+            resetSafeCrackGame();
+            resetMathGame();
+            resetTypingGame();
+            resetTowerGame();
+            resetAlarmGame();
+        }
+
+        allCards.forEach(card => card.addEventListener('click', () => showScreen(card.dataset.target)));
+        allBackButtons.forEach(btn => btn.addEventListener('click', () => showScreen(btn.dataset.target)));
+
+        // --- MASTER KEY HANDLER ---
+        window.addEventListener('keydown', (e) => {
+            if (document.getElementById('safe-crack-game').classList.contains('active')) {
+                handleSafeCrackKeyPress(e);
+            } else if (document.getElementById('typing-game').classList.contains('active')) {
+                handleTypingKeyPress(e);
+            } else if (document.getElementById('tower-game').classList.contains('active')) {
+                handleTowerKeyPress(e);
+            }
+        });
         
         // ===============================================
-        // JOGO 1: LÓGICA DO HACK DE MEMÓRIA (inalterado)
+        // JOGO DE MEMÓRIA (BANCO)
         // ===============================================
-        const memGameScreen = document.getElementById('mem-game-screen'), memResultScreen = document.getElementById('mem-result-screen'), memGrid = document.getElementById('mem-grid'), memQuestionArea = document.getElementById('mem-question-area'), memQuestionText = document.getElementById('mem-question-text'), memOptionsContainer = document.getElementById('mem-options-container'), memRoundTracker = document.getElementById('mem-round-tracker'), memTimerDisplay = document.getElementById('mem-timer-display'), memResultText = document.getElementById('mem-result-text'), memRestartButton = document.getElementById('mem-restart-button');
-        const MEM_CONFIG = { TOTAL_ROUNDS: 5, GRID_SIZE: 35, MEMORIZE_TIME: 5, RESPONSE_TIME: 5, COLORS: [ { name: 'Vermelho', code: '#E53935' }, { name: 'Azul', code: '#1E88E5' }, { name: 'Amarelo', code: '#FDD835' }, { name: 'Verde', code: '#43A047' } ] };
+        const memStartScreen = document.getElementById('mem-start-screen'), memGameScreen = document.getElementById('mem-game-screen'), memResultScreen = document.getElementById('mem-result-screen'), memGrid = document.getElementById('mem-grid'), memQuestionArea = document.getElementById('mem-question-area'), memQuestionText = document.getElementById('mem-question-text'), memOptionsContainer = document.getElementById('mem-options-container'), memRoundTracker = document.getElementById('mem-round-tracker'), memTimerDisplay = document.getElementById('mem-timer-display'), memResultText = document.getElementById('mem-result-text');
+        const MEM_CONFIG = { TOTAL_ROUNDS: 5, GRID_SIZE: 35, MEMORIZE_TIME: 5, RESPONSE_TIME: 5, COLORS: [{ name: "Vermelho", code: "#E53935" }, { name: "Azul", code: "#1E88E5" }, { name: "Amarelo", code: "#FDD835" }, { name: "Verde", code: "#43A047" }] };
         let memCurrentRound, memScore, memColorCounts, memTimerInterval;
-        function startMemoryGame() { memCurrentRound = 1; memScore = 0; memGameScreen.style.display = 'block'; memResultScreen.style.display = 'none'; startMemoryRound(); }
-        function startMemoryRound() { memRoundTracker.textContent = `Rodada ${memCurrentRound}/${MEM_CONFIG.TOTAL_ROUNDS}`; memQuestionArea.style.display = 'none'; memOptionsContainer.innerHTML = ''; generateMemoryGrid(); memGrid.style.display = 'grid'; startMemTimer(MEM_CONFIG.MEMORIZE_TIME, showMemoryQuestion); }
+        function startMemoryGame() { memStartScreen.style.display = 'none'; memGameScreen.style.display = 'block'; memCurrentRound = 1; memScore = 0; startMemoryRound(); }
+        function startMemoryRound() { memRoundTracker.textContent = `Rodada ${memCurrentRound}/${MEM_CONFIG.TOTAL_ROUNDS}`; memQuestionArea.style.display = "none"; memOptionsContainer.innerHTML = ""; generateMemoryGrid(); memGrid.style.display = "grid"; startMemTimer(MEM_CONFIG.MEMORIZE_TIME, showMemoryQuestion); }
         function startMemTimer(duration, callback) { let timeLeft = duration; memTimerDisplay.textContent = `Tempo: ${timeLeft}s`; clearInterval(memTimerInterval); memTimerInterval = setInterval(() => { timeLeft--; memTimerDisplay.textContent = `Tempo: ${timeLeft}s`; if (timeLeft <= 0) { clearInterval(memTimerInterval); callback(); } }, 1000); }
-        function generateMemoryGrid() { memGrid.innerHTML = ''; memColorCounts = MEM_CONFIG.COLORS.reduce((acc, color) => ({ ...acc, [color.name]: 0 }), {}); for (let i = 0; i < MEM_CONFIG.GRID_SIZE; i++) { const randomColor = MEM_CONFIG.COLORS[Math.floor(Math.random() * MEM_CONFIG.COLORS.length)]; memColorCounts[randomColor.name]++; const dot = document.createElement('div'); dot.className = 'mem-dot'; dot.style.backgroundColor = randomColor.code; memGrid.appendChild(dot); } }
-        function showMemoryQuestion() { memGrid.style.display = 'none'; memQuestionArea.style.display = 'flex'; const targetColor = MEM_CONFIG.COLORS[Math.floor(Math.random() * MEM_CONFIG.COLORS.length)]; const correctAnswer = memColorCounts[targetColor.name]; memQuestionText.innerHTML = `Quantas bolinhas <strong style="color:${targetColor.code};">${targetColor.name}s</strong> havia?`; const options = generateMemOptions(correctAnswer); options.forEach(option => { const button = document.createElement('button'); button.textContent = option; button.className = 'mem-option-btn'; button.onclick = () => checkMemAnswer(option, correctAnswer); memOptionsContainer.appendChild(button); }); startMemTimer(MEM_CONFIG.RESPONSE_TIME, () => checkMemAnswer(-1, correctAnswer)); }
-        function generateMemOptions(correctAnswer) { let options = new Set([correctAnswer]); while (options.size < 3) { const offset = Math.floor(Math.random() * 5) - 2; let wrongAnswer = correctAnswer + offset; if (wrongAnswer < 0) wrongAnswer = 0; if (wrongAnswer !== correctAnswer) options.add(wrongAnswer); } return Array.from(options).sort(() => Math.random() - 0.5); }
-        function checkMemAnswer(selected, correct) { clearInterval(memTimerInterval); Array.from(memOptionsContainer.children).forEach(btn => { btn.disabled = true; const btnValue = parseInt(btn.textContent); if (btnValue === correct) { btn.style.backgroundColor = '#43A047'; btn.style.borderColor = '#43A047'; } if (btnValue === selected && selected !== correct) { btn.style.backgroundColor = '#E53935'; btn.style.borderColor = '#E53935'; } }); if (selected === correct) memScore++; setTimeout(() => { if (memCurrentRound < MEM_CONFIG.TOTAL_ROUNDS) { memCurrentRound++; startMemoryRound(); } else { showMemResult(); } }, 1800); }
-        function showMemResult() { memGameScreen.style.display = 'none'; memResultScreen.style.display = 'block'; memResultText.textContent = `Você acertou ${memScore} de ${MEM_CONFIG.TOTAL_ROUNDS}!`; }
-        function resetMemoryGame() { clearInterval(memTimerInterval); memGameScreen.style.display = 'block'; memResultScreen.style.display = 'none'; memQuestionArea.style.display = 'none'; memGrid.style.display = 'block'; memGrid.innerHTML = '<p style="color:#555;">Clique em "Voltar" para escolher um jogo.</p>'; }
-        memRestartButton.addEventListener('click', startMemoryGame);
-        document.querySelector('.game-card[data-game="memory-game"]').addEventListener('click', startMemoryGame);
+        function generateMemoryGrid() { memGrid.innerHTML = ""; memColorCounts = MEM_CONFIG.COLORS.reduce((acc, color) => ({...acc, [color.name]: 0 }), {}); for (let i = 0; i < MEM_CONFIG.GRID_SIZE; i++) { const randomColor = MEM_CONFIG.COLORS[Math.floor(Math.random() * MEM_CONFIG.COLORS.length)]; memColorCounts[randomColor.name]++; const dot = document.createElement("div"); dot.className = "mem-dot"; dot.style.backgroundColor = randomColor.code; memGrid.appendChild(dot); } }
+        function showMemoryQuestion() { memGrid.style.display = "none"; memQuestionArea.style.display = "flex"; const targetColor = MEM_CONFIG.COLORS[Math.floor(Math.random() * MEM_CONFIG.COLORS.length)]; const correctAnswer = memColorCounts[targetColor.name]; memQuestionText.innerHTML = `Quantas bolinhas <strong style="color:${targetColor.code};">${targetColor.name}s</strong> havia?`; const options = generateMemOptions(correctAnswer); options.forEach(option => { const button = document.createElement("button"); button.textContent = option; button.className = "mem-option-btn"; button.onclick = () => checkMemAnswer(option, correctAnswer); memOptionsContainer.appendChild(button); }); startMemTimer(MEM_CONFIG.RESPONSE_TIME, () => checkMemAnswer(-1, correctAnswer)); }
+        function generateMemOptions(correctAnswer) { let options = new Set([correctAnswer]); while (options.size < 3) { const offset = Math.floor(5 * Math.random()) - 2; let wrongAnswer = correctAnswer + offset; if (wrongAnswer < 0) wrongAnswer = 0; if (wrongAnswer !== correctAnswer) options.add(wrongAnswer); } return Array.from(options).sort(() => .5 - Math.random()); }
+        function checkMemAnswer(selected, correct) { clearInterval(memTimerInterval); Array.from(memOptionsContainer.children).forEach(btn => { btn.disabled = true; const btnValue = parseInt(btn.textContent); if (btnValue === correct) { btn.style.backgroundColor = "var(--primary-color)"; } if (btnValue === selected && selected !== correct) { btn.style.backgroundColor = "var(--fail-color)"; } }); if (selected === correct) memScore++; setTimeout(() => { if (memCurrentRound < MEM_CONFIG.TOTAL_ROUNDS) { memCurrentRound++; startMemoryRound(); } else { showMemResult(); } }, 1800); }
+        function showMemResult() { memGameScreen.style.display = "none"; memResultScreen.style.display = "block"; memResultText.textContent = `Você acertou ${memScore} de ${MEM_CONFIG.TOTAL_ROUNDS}!`; }
+        function resetMemoryGame() { clearInterval(memTimerInterval); memStartScreen.style.display = 'block'; memGameScreen.style.display = 'none'; memResultScreen.style.display = 'none'; }
+        document.querySelector('.mem-start-btn').addEventListener("click", startMemoryGame); document.querySelector('.mem-restart-btn').addEventListener("click", startMemoryGame);
 
         // ===============================================
-        // JOGO 2: LÓGICA DO HACK FURA-FORTE (inalterado, pois a mudança foi apenas no CSS)
+        // JOGO FURA-FORTE (BANCO)
         // ===============================================
-        const scContainer = document.getElementById('safe-crack-container'), scStartOverlay = document.getElementById('sc-start-overlay'), scGameoverOverlay = document.getElementById('sc-gameover-overlay'), scStartBtn = document.getElementById('sc-start-btn'), scRestartBtn = document.getElementById('sc-restart-btn'), scScoreDisplay = document.getElementById('sc-score'), scFinalScore = document.getElementById('sc-final-score'), scSpeedInput = document.getElementById('sc-speed-input');
-        const SC_CONFIG = { COLORS: ['#a8e05f', '#f3f313', '#33e3e4', '#c9333f'], SPEED_INCREMENT: 0.2, MOVE_STEP: 35 };
-        let scPlayer, scBlockRow, scGameActive, scGamePaused, scScore, scSpeed, scGameLoopId;
-        function createDrill() { const drill = document.createElement('div'); drill.className = 'sc-player-drill'; drill.innerHTML = `<svg viewBox="0 0 30 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0L0 25H30L15 0Z" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="25" width="16" height="5" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="32" width="16" height="5" stroke-width="3" stroke-linejoin="round"/></svg>`; scContainer.appendChild(drill); return drill; }
-        function startSafeCrackGame() { scStartOverlay.classList.add('hidden'); scGameoverOverlay.classList.add('hidden'); scScore = 0; scSpeed = parseFloat(scSpeedInput.value); if (isNaN(scSpeed) || scSpeed <= 0) scSpeed = 2; scGameActive = true; scGamePaused = false; updateScoreDisplay(); startNewSCRound(); }
-        function startNewSCRound() { if (!scGameActive) return; if (scBlockRow) scBlockRow.remove(); scBlockRow = document.createElement('div'); scBlockRow.className = 'sc-block-row'; scBlockRow.style.top = '-50px'; const shuffledColors = [...SC_CONFIG.COLORS].sort(() => Math.random() - 0.5); shuffledColors.forEach(color => { const seg = document.createElement('div'); seg.className = 'sc-block-segment'; seg.style.backgroundColor = color; scBlockRow.appendChild(seg); }); scContainer.appendChild(scBlockRow); const targetColorIndex = Math.floor(Math.random() * 4); scPlayer.querySelector('svg path, svg rect').style.stroke = shuffledColors[targetColorIndex]; scPlayer.dataset.targetColorIndex = targetColorIndex; cancelAnimationFrame(scGameLoopId); scGameLoopId = requestAnimationFrame(gameLoop); }
-        function gameLoop() { if (!scGameActive) return; if (!scGamePaused) { const currentTop = parseFloat(scBlockRow.style.top); scBlockRow.style.top = `${currentTop + scSpeed}px`; if (currentTop + scBlockRow.offsetHeight >= scContainer.clientHeight - 10) { checkSCResult(); } } scGameLoopId = requestAnimationFrame(gameLoop); }
-        function checkSCResult() { const playerRect = scPlayer.getBoundingClientRect(); const playerCenter = playerRect.left + playerRect.width / 2; const segments = scBlockRow.querySelectorAll('.sc-block-segment'); let correctHit = false; let hitSegment = null; segments.forEach((segment, index) => { const segmentRect = segment.getBoundingClientRect(); if(playerCenter >= segmentRect.left && playerCenter <= segmentRect.right && index == scPlayer.dataset.targetColorIndex) { correctHit = true; hitSegment = segment; } }); if (correctHit) { scGamePaused = true; scScore++; scSpeed += SC_CONFIG.SPEED_INCREMENT; updateScoreDisplay(); scPlayer.classList.add('hit-animation'); hitSegment.classList.add('breaking'); setTimeout(() => { scPlayer.classList.remove('hit-animation'); scGamePaused = false; startNewSCRound(); }, 500); } else { gameOverSC(); } }
-        function gameOverSC() { scGameActive = false; cancelAnimationFrame(scGameLoopId); scFinalScore.textContent = `Pontos: ${scScore}`; scGameoverOverlay.classList.remove('hidden'); }
-        function updateScoreDisplay() { scScoreDisplay.textContent = `Pontos: ${scScore}`; }
-        function movePlayer(direction) { if(!scGameActive || scGamePaused) return; const playerWidth = scPlayer.clientWidth; const containerWidth = scContainer.clientWidth; let currentLeft = scPlayer.offsetLeft; let newLeft = (direction === 'left') ? currentLeft - SC_CONFIG.MOVE_STEP : currentLeft + SC_CONFIG.MOVE_STEP; newLeft = Math.max(0, Math.min(containerWidth - playerWidth, newLeft)); scPlayer.style.left = `${newLeft}px`; }
-        function resetSafeCrackGame() { scGameActive = false; cancelAnimationFrame(scGameLoopId); scStartOverlay.classList.remove('hidden'); scGameoverOverlay.classList.add('hidden'); if (scBlockRow) scBlockRow.remove(); if (scPlayer) { const containerWidth = scContainer.clientWidth; const playerWidth = scPlayer.clientWidth; scPlayer.style.left = `${(containerWidth / 2) - (playerWidth / 2)}px`; } }
-        scPlayer = createDrill();
-        resetSafeCrackGame();
-        scStartBtn.addEventListener('click', startSafeCrackGame);
-        scRestartBtn.addEventListener('click', startSafeCrackGame);
-        window.addEventListener('keydown', (e) => { if(document.getElementById('safe-crack-game').classList.contains('active')) { if (e.key === 'ArrowLeft') movePlayer('left'); else if (e.key === 'ArrowRight') movePlayer('right'); } });
+        const scContainer = document.getElementById("safe-crack-container"), scStartOverlay = document.getElementById("sc-start-overlay"), scGameoverOverlay = document.getElementById("sc-gameover-overlay"), scStartBtn = document.getElementById("sc-start-btn"), scRestartBtn = document.getElementById("sc-restart-btn"), scScoreDisplay = document.getElementById("sc-score"), scFinalScore = document.getElementById("sc-final-score"), scSpeedInput = document.getElementById("sc-speed-input"); const SC_CONFIG = { COLORS: ["#a8e05f", "#f3f313", "#33e3e4", "#c9333f"], SPEED_INCREMENT: .2, MOVE_STEP: 35 }; let scPlayer, scBlockRow, scGameActive, scGamePaused, scScore, scSpeed, scGameLoopId;
+        function createDrill() { if (document.querySelector(".sc-player-drill")) return; scPlayer = document.createElement("div"); scPlayer.className = "sc-player-drill"; scPlayer.innerHTML = '<svg viewBox="0 0 30 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0L0 25H30L15 0Z" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="25" width="16" height="5" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="32" width="16" height="5" stroke-width="3" stroke-linejoin="round"/></svg>'; scContainer.appendChild(scPlayer); }
+        function startSafeCrackGame() { scStartOverlay.classList.add("hidden"); scGameoverOverlay.classList.add("hidden"); scScore = 0; scSpeed = parseFloat(scSpeedInput.value); (isNaN(scSpeed) || scSpeed <= 0) && (scSpeed = 2); scGameActive = true; scGamePaused = false; updateScoreDisplay(); startNewSCRound(); }
+        function startNewSCRound() { if (!scGameActive) return; if(scBlockRow) scBlockRow.remove(); scBlockRow = document.createElement("div"); scBlockRow.className = "sc-block-row"; scBlockRow.style.top = "-50px"; const e = [...SC_CONFIG.COLORS].sort(() => .5 - Math.random()); e.forEach(e => { const t = document.createElement("div"); t.className = "sc-block-segment", t.style.backgroundColor = e, scBlockRow.appendChild(t) }); scContainer.appendChild(scBlockRow); const t = Math.floor(4 * Math.random()); scPlayer.querySelector("svg path, svg rect").style.stroke = e[t]; scPlayer.dataset.targetColorIndex = t; cancelAnimationFrame(scGameLoopId); scGameLoopId = requestAnimationFrame(gameLoop); }
+        function gameLoop() { if (!scGameActive) return; if (!scGamePaused) { const e = parseFloat(scBlockRow.style.top); scBlockRow.style.top = `${e+scSpeed}px`, e + scBlockRow.offsetHeight >= scContainer.clientHeight - 10 && checkSCResult() } scGameLoopId = requestAnimationFrame(gameLoop) }
+        function checkSCResult() { const e = scPlayer.getBoundingClientRect(), t = e.left + e.width / 2, o = scBlockRow.querySelectorAll(".sc-block-segment"); let n = false, c = null; o.forEach((e, o) => { const r = e.getBoundingClientRect(); t >= r.left && t <= r.right && o == scPlayer.dataset.targetColorIndex && (n = true, c = e) }); if(n) { scGamePaused = true; scScore++; scSpeed += SC_CONFIG.SPEED_INCREMENT; updateScoreDisplay(); scPlayer.classList.add("hit-animation"); c.classList.add("breaking"); setTimeout(() => { scPlayer.classList.remove("hit-animation"); scGamePaused = false; startNewSCRound(); }, 500); } else { gameOverSC(); } }
+        function gameOverSC() { scGameActive = false; cancelAnimationFrame(scGameLoopId); scFinalScore.textContent = `Pontos: ${scScore}`; scGameoverOverlay.classList.remove("hidden") }
+        function updateScoreDisplay() { scScoreDisplay.textContent = `Pontos: ${scScore}` }
+        function handleSafeCrackKeyPress(e) { if (!scGameActive || scGamePaused) return; const side = e.key === 'ArrowLeft' ? 'left' : e.key === 'ArrowRight' ? 'right' : null; if(!side) return; const t = scPlayer.clientWidth, o = scContainer.clientWidth; let n = scPlayer.offsetLeft, c = "left" === side ? n - SC_CONFIG.MOVE_STEP : n + SC_CONFIG.MOVE_STEP; c = Math.max(0, Math.min(o - t, c)), scPlayer.style.left = `${c}px`; }
+        function resetSafeCrackGame() { scGameActive = false; cancelAnimationFrame(scGameLoopId); scStartOverlay.classList.remove("hidden"); scGameoverOverlay.classList.add("hidden"); if(scBlockRow) scBlockRow.remove(); scBlockRow = null; if(scPlayer) scPlayer.style.left = `calc(50% - 15px)`; }
+        createDrill(); scStartBtn.addEventListener("click", startSafeCrackGame); scRestartBtn.addEventListener("click", startSafeCrackGame);
+
+        // ===============================================
+        // JOGO DE MATEMÁTICA (JOALHERIA)
+        // ===============================================
+        const mathStartScreen = document.getElementById("math-start-screen"), mathGameScreen = document.getElementById("math-game-screen"), mathResultScreen = document.getElementById("math-result-screen"), mathStartBtn = document.getElementById("math-start-btn"), mathRestartBtn = document.getElementById("math-restart-btn"), mathProgress = document.getElementById("math-progress"), mathTimer = document.getElementById("math-timer"), mathProblem1 = document.getElementById("math-problem-1"), mathProblem2 = document.getElementById("math-problem-2"), mathControls = document.querySelector(".math-controls"), mathResultTitle = document.getElementById("math-result-title"), mathResultText = document.getElementById("math-result-text"); const MATH_CONFIG = { WIN_SCORE: 5, TIME_LIMIT: 20 }; let mathCurrentScore, mathTimerInterval, mathTimeLeft, mathCorrectOp;
+        function startMathGame() { mathStartScreen.style.display = "none"; mathResultScreen.style.display = "none"; mathGameScreen.style.display = "block"; mathCurrentScore = 0; mathTimeLeft = MATH_CONFIG.TIME_LIMIT; updateMathProgress(); startMathTimer(); startMathRound(); }
+        function startMathRound() { const e = generateMathProblem(), t = generateMathProblem(); mathProblem1.textContent = e.text; mathProblem2.textContent = t.text; mathCorrectOp = e.result < t.result ? "<" : e.result > t.result ? ">" : "="; }
+        function generateMathProblem() { const e = Math.floor(9 * Math.random()) + 1, t = Math.floor(9 * Math.random()) + 1, o = Math.floor(20 * Math.random()) + 1, n = ["*", "+"][Math.floor(2 * Math.random())], a = ["*", "+", "-"][Math.floor(3 * Math.random())], r = `(${e}${n}${t})${a}${o}`; return { text: r, result: eval(r) } }
+        function handleMathAnswer(e) { const t = e.target.dataset.op; if (!t) return; if (t === mathCorrectOp) { mathCurrentScore++; updateMathProgress(); if (mathCurrentScore >= MATH_CONFIG.WIN_SCORE) { winMathGame(); } else { startMathRound(); } } else { loseMathGame("Resposta incorreta!"); } }
+        function startMathTimer() { mathTimer.textContent = `${mathTimeLeft}s`; mathTimer.classList.remove("low-time"); clearInterval(mathTimerInterval); mathTimerInterval = setInterval(() => { mathTimeLeft--; mathTimer.textContent = `${mathTimeLeft}s`; if(mathTimeLeft <= 5) mathTimer.classList.add("low-time"); if (mathTimeLeft <= 0) loseMathGame("O tempo acabou."); }, 1e3) }
+        function winMathGame() { clearInterval(mathTimerInterval); mathGameScreen.style.display = "none"; mathResultScreen.style.display = "block"; mathResultTitle.textContent = "HACK SUCEDIDO"; mathResultTitle.style.color = "var(--primary-color)"; mathResultText.textContent = `Você completou o desafio em ${MATH_CONFIG.TIME_LIMIT-mathTimeLeft} segundos!`; }
+        function loseMathGame(reason) { clearInterval(mathTimerInterval); mathGameScreen.style.display = "none"; mathResultScreen.style.display = "block"; mathResultTitle.textContent = "HACK FALHOU"; mathResultTitle.style.color = "var(--fail-color)"; mathResultText.textContent = reason; }
+        function updateMathProgress() { mathProgress.textContent = `${mathCurrentScore}/${MATH_CONFIG.WIN_SCORE}` }
+        function resetMathGame() { clearInterval(mathTimerInterval); mathStartScreen.style.display = 'block'; mathGameScreen.style.display = 'none'; mathResultScreen.style.display = 'none'; }
+        mathStartBtn.addEventListener("click", startMathGame); mathRestartBtn.addEventListener("click", startMathGame); mathControls.addEventListener("click", handleMathAnswer);
+        
+        // ===============================================
+        // JOGO DE DIGITAÇÃO (CLASSE B)
+        // ===============================================
+        const typingStartScreen = document.getElementById('typing-start-screen'), typingResultScreen = document.getElementById('typing-result-screen'), typingStartBtn = document.getElementById('typing-start-btn'), typingRestartBtn = document.getElementById('typing-restart-btn'), typingModalBackdrop = document.getElementById('typing-modal-backdrop'), typingSquares = document.querySelectorAll('.typing-square'), typingTimerBar = document.getElementById('typing-timer-bar'), typingResultTitle = document.getElementById('typing-result-title'), typingResultText = document.getElementById('typing-result-text'); const TYPING_CONFIG = { MEMORIZE_TIME: 5000, EXECUTE_TIME: 15000, CHARS: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" }; let typingTargets = [], typingGameActive = false, typingTimer;
+        function startTypingGame() { typingStartScreen.style.display = 'none'; typingResultScreen.style.display = 'none'; typingModalBackdrop.style.display = 'flex'; typingGameActive = true; generateTypingTargets(); typingTargets.forEach((target, index) => { typingSquares[index].querySelector('.char').textContent = target.count; typingSquares[index].classList.remove('completed'); }); setTimeout(startTypingExecutionPhase, TYPING_CONFIG.MEMORIZE_TIME); }
+        function generateTypingTargets() { typingTargets = []; const usedChars = new Set(); for (let i = 0; i < 4; i++) { let char; do { char = TYPING_CONFIG.CHARS[Math.floor(Math.random() * TYPING_CONFIG.CHARS.length)]; } while (usedChars.has(char)); usedChars.add(char); typingTargets.push({ char: char, count: Math.floor(Math.random() * 12) + 1, pressed: 0, completed: false }); } }
+        function startTypingExecutionPhase() { if (!typingGameActive) return; typingTargets.forEach((target, index) => { typingSquares[index].querySelector('.char').textContent = target.char; }); typingTimerBar.style.transition = `width ${TYPING_CONFIG.EXECUTE_TIME / 1000}s linear`; typingTimerBar.style.width = '100%'; requestAnimationFrame(() => { typingTimerBar.style.width = '0%'; }); typingTimer = setTimeout(() => loseTypingGame("O tempo acabou."), TYPING_CONFIG.EXECUTE_TIME); }
+        function handleTypingKeyPress(e) { if (!typingGameActive) return; const pressedKey = e.key.toUpperCase(); const target = typingTargets.find(t => t.char === pressedKey && !t.completed); if (!target) { loseTypingGame("Tecla errada pressionada!"); return; } target.pressed++; if (target.pressed > target.count) { loseTypingGame("Você pressionou a tecla mais vezes que o necessário!"); return; } if (target.pressed === target.count) { target.completed = true; typingSquares[typingTargets.indexOf(target)].classList.add('completed'); } if (typingTargets.every(t => t.completed)) { winTypingGame(); } }
+        function winTypingGame() { cleanupTypingGame(); typingResultTitle.textContent = "HACK SUCEDIDO"; typingResultTitle.style.color = 'var(--primary-color)'; typingResultText.textContent = "Sequência inserida com sucesso."; typingResultScreen.style.display = 'block'; }
+        function loseTypingGame(reason) { cleanupTypingGame(); typingResultTitle.textContent = "HACK FALHOU"; typingResultTitle.style.color = 'var(--fail-color)'; typingResultText.textContent = reason; typingResultScreen.style.display = 'block'; }
+        function cleanupTypingGame() { typingGameActive = false; clearTimeout(typingTimer); typingModalBackdrop.style.display = 'none'; }
+        function resetTypingGame() { cleanupTypingGame(); typingStartScreen.style.display = 'block'; typingResultScreen.style.display = 'none'; if(typingTimerBar) { typingTimerBar.style.transition = 'none'; typingTimerBar.style.width = '100%'; } }
+        typingStartBtn.addEventListener('click', startTypingGame); typingRestartBtn.addEventListener('click', startTypingGame);
+        
+        // ===============================================
+        // JOGO DA TORRE (CLASSE B)
+        // ===============================================
+        const towerStartScreen = document.getElementById('tower-start-screen'), towerResultScreen = document.getElementById('tower-result-screen'), towerStartBtn = document.getElementById('tower-start-btn'), towerRestartBtn = document.getElementById('tower-restart-btn'), towerModalBackdrop = document.getElementById('tower-modal-backdrop'), towerLevelsContainer = document.getElementById('tower-levels-container'), towerPlayer = document.getElementById('tower-player'), towerTimerBar = document.getElementById('tower-timer-bar'), towerResultTitle = document.getElementById('tower-result-title'), towerResultText = document.getElementById('tower-result-text'), towerHeightInput = document.getElementById('tower-height-input'), towerTimeInput = document.getElementById('tower-time-input');
+        let towerLevels = [], towerGameActive = false, towerTimer, towerCurrentLevel, TOWER_BLOCK_HEIGHT = 47, TOWER_CONFIG = { height: 100, time: 15000 };
+        function startTowerGame() { TOWER_CONFIG.height = parseInt(towerHeightInput.value) || 100; TOWER_CONFIG.time = (parseInt(towerTimeInput.value) || 15) * 1000; towerStartScreen.style.display = 'none'; towerResultScreen.style.display = 'none'; towerModalBackdrop.style.display = 'flex'; towerGameActive = true; towerCurrentLevel = 0; generateTowerLevels(); towerLevelsContainer.style.transform = `translateY(0px)`; const firstMove = towerLevels[0]; const startX = firstMove === 'left' ? '3.75px' : '116.25px'; const startRot = firstMove === 'left' ? '90deg' : '-90deg'; towerPlayer.style.bottom = '5px'; towerPlayer.style.left = startX; towerPlayer.style.transform = `rotate(${startRot})`; towerTimerBar.style.transition = 'none'; towerTimerBar.style.width = '100%'; setTimeout(() => { towerTimerBar.style.transition = `width ${TOWER_CONFIG.time / 1000}s linear`; towerTimerBar.style.width = '0%'; }, 100); clearTimeout(towerTimer); towerTimer = setTimeout(() => loseTowerGame("O tempo acabou."), TOWER_CONFIG.time); }
+        function generateTowerLevels() { towerLevelsContainer.innerHTML = ''; towerLevels = []; for (let i = 0; i < TOWER_CONFIG.height + 8; i++) { const sideOfOpening = Math.random() < 0.5 ? 'left' : 'right'; towerLevels.push(sideOfOpening); const block = document.createElement('div'); block.className = `tower-block gap-${sideOfOpening}`; towerLevelsContainer.prepend(block); } }
+        function handleTowerKeyPress(e) { if (!towerGameActive || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return; const requiredSide = towerLevels[towerCurrentLevel]; const pressedSide = e.key === 'ArrowLeft' ? 'left' : 'right'; if (pressedSide === requiredSide) { towerCurrentLevel++; const towerOffset = towerCurrentLevel * TOWER_BLOCK_HEIGHT; towerLevelsContainer.style.transform = `translateY(${towerOffset}px)`; const nextSide = towerLevels[towerCurrentLevel]; if(nextSide) { const playerXOffset = nextSide === 'left' ? '3.75px' : '116.25px'; const rotation = nextSide === 'left' ? '90deg' : '-90deg'; towerPlayer.style.left = playerXOffset; towerPlayer.style.transform = `rotate(${rotation})`; } if (towerCurrentLevel >= TOWER_CONFIG.height) { winTowerGame(); } } else { loseTowerGame("Lado errado!"); } }
+        function winTowerGame() { cleanupTowerGame(); towerResultTitle.textContent = "HACK SUCEDIDO"; towerResultTitle.style.color = 'var(--primary-color)'; towerResultText.textContent = `Você escalou ${TOWER_CONFIG.height} níveis.`; towerResultScreen.style.display = 'block'; }
+        function loseTowerGame(reason) { cleanupTowerGame(); towerResultTitle.textContent = "HACK FALHOU"; towerResultTitle.style.color = 'var(--fail-color)'; towerResultText.textContent = reason; towerResultScreen.style.display = 'block'; }
+        function cleanupTowerGame() { towerGameActive = false; clearTimeout(towerTimer); }
+        function resetTowerGame() { cleanupTowerGame(); towerStartScreen.style.display = 'block'; towerResultScreen.style.display = 'none'; if(towerTimerBar) { towerTimerBar.style.transition = 'none'; towerTimerBar.style.width = '100%'; } }
+        towerStartBtn.addEventListener('click', startTowerGame); towerRestartBtn.addEventListener('click', startTowerGame);
+
+        // ===============================================
+        // JOGO DO ALARME
+        // ===============================================
+        const alarmStartScreen = document.getElementById('alarm-start-screen'), alarmGameScreen = document.getElementById('alarm-game-screen'), alarmResultScreen = document.getElementById('alarm-result-screen'), alarmStartBtn = document.getElementById('alarm-start-btn'), alarmRestartBtn = document.getElementById('alarm-restart-btn'), alarmGrid = document.getElementById('alarm-grid'), alarmScoreDisplay = document.getElementById('alarm-score'), alarmTimerDisplay = document.getElementById('alarm-timer'), alarmResultTitle = document.getElementById('alarm-result-title'), alarmResultText = document.getElementById('alarm-result-text');
+        const ALARM_CONFIG = { GRID_SIZE: 11, NUM_YELLOW: 8, NUM_RED: 12, TIME_LIMIT: 60 };
+        let alarmGridState = [], alarmTimer, alarmTimeLeft, alarmGameActive, alarmYellowsAtCenter, alarmSelectedYellow = null, alarmGreenDot = null;
+        function startAlarmGame() { alarmStartScreen.style.display = 'none'; alarmResultScreen.style.display = 'none'; alarmGameScreen.style.display = 'block'; alarmGameActive = true; alarmYellowsAtCenter = 0; alarmTimeLeft = ALARM_CONFIG.TIME_LIMIT; initAlarmGrid(); renderAlarmGrid(); startAlarmTimer(); updateAlarmScore(); }
+        function initAlarmGrid() { alarmGridState = Array.from({ length: ALARM_CONFIG.GRID_SIZE }, () => Array(ALARM_CONFIG.GRID_SIZE).fill(null)); const center = Math.floor(ALARM_CONFIG.GRID_SIZE / 2); alarmGridState[center][center] = { type: 'center' }; const placeObject = (type) => { let x, y; do { x = Math.floor(Math.random() * ALARM_CONFIG.GRID_SIZE); y = Math.floor(Math.random() * ALARM_CONFIG.GRID_SIZE); } while (alarmGridState[y][x] !== null); const obj = { type, x, y }; alarmGridState[y][x] = obj; return obj; }; for (let i = 0; i < ALARM_CONFIG.NUM_YELLOW; i++) placeObject('yellow'); for (let i = 0; i < ALARM_CONFIG.NUM_RED; i++) placeObject('red'); alarmGreenDot = placeObject('green'); }
+        function renderAlarmGrid() { alarmGrid.innerHTML = ''; alarmGrid.style.backgroundSize = `${100 / ALARM_CONFIG.GRID_SIZE}% ${100 / ALARM_CONFIG.GRID_SIZE}%`; for (let y = 0; y < ALARM_CONFIG.GRID_SIZE; y++) { for (let x = 0; x < ALARM_CONFIG.GRID_SIZE; x++) { const cell = document.createElement('div'); cell.className = 'alarm-cell'; cell.dataset.x = x; cell.dataset.y = y; const obj = alarmGridState[y][x]; if (obj) { const dot = document.createElement('div'); dot.className = `alarm-dot dot-${obj.type}`; if(alarmSelectedYellow && alarmSelectedYellow.x === x && alarmSelectedYellow.y === y) { dot.classList.add('dot-selected'); } cell.appendChild(dot); } alarmGrid.appendChild(cell); } } if (alarmSelectedYellow) highlightPossibleMoves(); }
+        function highlightPossibleMoves() { for (let dy = -1; dy <= 1; dy++) { for (let dx = -1; dx <= 1; dx++) { if (dx === 0 && dy === 0) continue; const nx = alarmGreenDot.x + dx, ny = alarmGreenDot.y + dy; if (isValid(nx, ny) && (!alarmGridState[ny][nx] || alarmGridState[ny][nx].type === 'center')) { const cell = alarmGrid.children[ny * ALARM_CONFIG.GRID_SIZE + nx]; const highlight = document.createElement('div'); highlight.className = 'dot-highlight'; cell.appendChild(highlight); } } } }
+        function handleAlarmGridClick(e) { if (!alarmGameActive) return; const cell = e.target.closest('.alarm-cell'); if (!cell) return; const x = parseInt(cell.dataset.x), y = parseInt(cell.dataset.y); const targetObj = alarmGridState[y][x]; if (alarmSelectedYellow) { const isTargetCenter = targetObj && targetObj.type === 'center'; if (isAdjacent({x, y}, alarmGreenDot) && (!targetObj || isTargetCenter)) { alarmGridState[alarmSelectedYellow.y][alarmSelectedYellow.x] = null; if (isTargetCenter) { alarmYellowsAtCenter++; updateAlarmScore(); } else { alarmSelectedYellow.x = x; alarmSelectedYellow.y = y; alarmGridState[y][x] = alarmSelectedYellow; } alarmSelectedYellow = null; if (alarmYellowsAtCenter === ALARM_CONFIG.NUM_YELLOW) winAlarmGame(); } else { alarmSelectedYellow = null; } } else { if (targetObj && targetObj.type === 'yellow' && isAdjacent(targetObj, alarmGreenDot)) { alarmSelectedYellow = targetObj; } else if (!targetObj) { alarmGridState[alarmGreenDot.y][alarmGreenDot.x] = null; alarmGreenDot.x = x; alarmGreenDot.y = y; alarmGridState[y][x] = alarmGreenDot; } } renderAlarmGrid(); }
+        function isAdjacent(pos1, pos2) { return Math.abs(pos1.x - pos2.x) <= 1 && Math.abs(pos1.y - pos2.y) <= 1; }
+        function isValid(x, y) { return x >= 0 && x < ALARM_CONFIG.GRID_SIZE && y >= 0 && y < ALARM_CONFIG.GRID_SIZE; }
+        function startAlarmTimer() { alarmTimerDisplay.textContent = `${alarmTimeLeft}s`; clearInterval(alarmTimer); alarmTimer = setInterval(() => { alarmTimeLeft--; alarmTimerDisplay.textContent = `${alarmTimeLeft}s`; if (alarmTimeLeft <= 0) loseAlarmGame("O tempo acabou."); }, 1000); }
+        function winAlarmGame() { cleanupAlarmGame(); alarmResultTitle.textContent = "ALARME DESATIVADO"; alarmResultTitle.style.color = 'var(--primary-color)'; alarmResultText.textContent = "Sistema de segurança contornado."; alarmResultScreen.style.display = 'block'; }
+        function loseAlarmGame(reason) { cleanupAlarmGame(); alarmResultTitle.textContent = "ALARME DISPARADO"; alarmResultTitle.style.color = 'var(--fail-color)'; alarmResultText.textContent = reason; alarmResultScreen.style.display = 'block'; }
+        function updateAlarmScore() { alarmScoreDisplay.textContent = `${alarmYellowsAtCenter}/${ALARM_CONFIG.NUM_YELLOW}`; }
+        function cleanupAlarmGame() { alarmGameActive = false; clearInterval(alarmTimer); }
+        function resetAlarmGame() { cleanupAlarmGame(); if(alarmStartScreen) alarmStartScreen.style.display = 'block'; if(alarmGameScreen) alarmGameScreen.style.display = 'none'; if(alarmResultScreen) alarmResultScreen.style.display = 'none'; }
+        alarmStartBtn.addEventListener('click', startAlarmGame); alarmRestartBtn.addEventListener('click', startAlarmGame); alarmGrid.addEventListener('click', handleAlarmGridClick);
     </script>
-
 </body>
 </html>
